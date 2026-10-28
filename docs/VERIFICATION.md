@@ -208,3 +208,33 @@ does not claim that the different demo matches are a recorded same-file transfer
 The original video and composition hashes remain unchanged. Private production
 proof stays under ignored `brag-output/v2/`; selected public assets are in
 `docs/media/`. Repository changes have not been committed or pushed.
+
+## Final clean-install and security recheck — October 28, 2026
+
+Created a clean temporary checkout from the published Git tree and an isolated
+Python 3.11 environment. Declared test/Azure/Foundry extras install successfully;
+`pip check` passes. The suite reports **79 passed, 1 skipped**: the skipped
+optional source-preparation test requires OpenCV, which the analysis app does
+not require. The existing prepared development environment previously passed all
+80 tests. Locked `npm ci` and the TypeScript/Vite production build pass.
+
+The clean first-run interface displays the request to import a verified Touchline
+dataset, with no browser JavaScript errors. A canonical-origin browser proxy
+forwarded this test to a separate temporary backend, leaving the existing app
+untouched. An API exercise imported 24 controlled geometry fixture windows and
+built a two-cluster workspace. The fixture is test geometry, not real football
+data or a demonstration of biomechanical validity. No live AI request was made.
+
+The README now includes clone commands, upgrades installer tooling and makes
+the private demo-data boundary explicit. Dependency floors require a compatible
+FastAPI and Starlette 1.3.1 or later. Final `pip-audit` and `npm audit` report
+**zero known dependency vulnerabilities**. The local application package is
+not covered by PyPI advisory lookup. These results do not replace code review
+or establish that the application has no security defects.
+
+Credential-pattern scanning covered all 102 historical Git blobs (77 text
+blobs), with no matches for private keys, common API/access tokens, Azure storage
+keys or SAS signatures. Current tracked files exclude runtime data, `.env`,
+credentials, dependencies and editable video production files. Private proof
+is kept outside Git. Both applications remain intended for local use; no public
+server deployment or cloud credential exchange was part of this check.

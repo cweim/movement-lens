@@ -55,8 +55,10 @@ earlier research analyses remain preserved.
 Requires Python 3.11+, Node 20.19+/22.12+, and a Touchline export with source-bound COCO-17 pose windows. FFmpeg prepares the sampled example frames for Microsoft AI; without it the assistant receives metadata only. No tracking model or GPU is required here.
 
 ```bash
+git clone https://github.com/cweim/movement-lens.git
 cd movement-lens
 python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip setuptools
 .venv/bin/python -m pip install -e '.[test]'
 cd frontend
 npm ci
@@ -65,7 +67,12 @@ cd ..
 MOVEMENT_LENS_PYTHON=.venv/bin/python ./run.sh
 ```
 
-Open **http://127.0.0.1:8770**. This loopback-only application has no multi-user authentication. Data, clips and generated reports live in ignored `runtime/`; use `MOVEMENT_LENS_STATE` for another private directory. Browsing prepared data does not need the original broadcast drive. The app never opens Touchline's live database.
+Open **http://127.0.0.1:8770**. A fresh clone starts empty; import your own compatible
+Touchline export using the instructions below. The private prepared example shown
+in the demo is not bundled. Local grouping, review and computed explanations need
+no Azure credentials; Microsoft AI and cloud storage are optional.
+
+This loopback-only application has no multi-user authentication. Data, clips and generated reports live in ignored `runtime/`; use `MOVEMENT_LENS_STATE` for another private directory. Browsing prepared data does not need the original broadcast drive. The app never opens Touchline's live database.
 
 The existing local workspace opens Marcelo in **Real Madrid versus Real Sociedad, December 30, 2015**, using both halves. Its audit accounts for 690 raw candidates, 403 independent candidates, 328 prepared imports and **290 usable independent windows: 580 seconds of observed movement**. There is no demo sampling cap. Sliding overlaps, identity exclusions, preparation failures and quality exclusions are accounted for separately. This is not continuous ninety-minute player observation.
 
