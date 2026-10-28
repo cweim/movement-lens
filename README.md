@@ -2,11 +2,52 @@
 
 One player. One match. Its movement patterns.
 
+[Quick start](#run-locally) · [Touchline handoff](docs/HANDOFF.md) ·
+[Methods](docs/CLUSTER_MATCH_PLAN.md) · [Microsoft integration](#optional-microsoft-integrations)
+
 Movement Lens turns [Touchline](https://github.com/cweim/touchline) player-window datasets into inspectable movement groups, a match-wide recurrence timeline and a shareable cluster evidence pack.
 
 **Observed movement → reviewed movement category → recurrence timeline → possible physical demands → research-backed general recovery context.**
 
-Version 0.4 has three screens: **Clusters**, **Match timeline**, and **Explain cluster**. The analysis object is an entire cluster. Original datasets and earlier research analyses remain preserved.
+Version 0.4 has three screens: **Clusters**, **Match timeline**, and **Explain cluster**.
+
+[![Watch the Movement Lens demo](docs/media/demo-poster.jpg)](https://github.com/cweim/movement-lens/blob/main/docs/media/movement-lens-demo.mp4)
+
+**[Watch the 1:44 demo](https://github.com/cweim/movement-lens/blob/main/docs/media/movement-lens-demo.mp4)** ·
+[Six showcase images and upload captions](docs/media/showcase/README.md)
+
+The walkthrough connects Touchline's dataset export to cluster review, the match
+timeline, a saved real Microsoft Foundry explanation and a portable evidence pack.
+
+## Why this exists
+
+A folder of extracted player clips is useful data, but an analyst still has to work
+out which movements recur, where they appear and which examples are worth reviewing.
+Movement Lens turns that library into inspectable numerical groups, source-linked
+match moments and an explanation kept alongside its evidence.
+
+## Two projects, one data flow
+
+![Touchline exports player-window data; Movement Lens groups, reviews and explains it](docs/diagrams/touchline-movement-lens.svg)
+
+**[Touchline](https://github.com/cweim/touchline) prepares the dataset. Movement Lens explores it.**
+The input is a **Windows** or **Both** Touchline ZIP containing pose arrays, source
+timestamps and provenance, with optional player clips. Transfer the file locally
+or import a private Azure snapshot. The apps run independently; no shared runtime
+or live Touchline server is required.
+[Follow the complete export → import walkthrough](docs/HANDOFF.md).
+
+## Inside the app
+
+| Inspect and review a cluster | Find its observed moments |
+| --- | --- |
+| <a href="docs/media/cluster-inspection.png"><img src="docs/media/cluster-inspection.png" alt="Typical and less-typical examples beside the aligned player-scaled pose" width="400"></a> | <a href="docs/media/match-timeline.png"><img src="docs/media/match-timeline.png" alt="Cluster occurrences across both match halves, with missing coverage visible" width="400"></a> |
+| **Explain the aggregate with citations** | **Download its evidence pack** |
+| <a href="docs/media/cluster-explanation.png"><img src="docs/media/cluster-explanation.png" alt="A real saved Microsoft Foundry explanation separates observations, possible demands and general recovery context" width="400"></a> | <a href="docs/media/evidence-pack.png"><img src="docs/media/evidence-pack.png" alt="The evidence pack is ready to download with its complete member list and representative clips" width="400"></a> |
+
+Screenshots show the working app and a real, previously generated Foundry draft for
+the displayed cluster. [Media notes](docs/media/CREDITS.md). Original datasets and
+earlier research analyses remain preserved.
 
 ## Run locally
 
@@ -80,9 +121,9 @@ MOVEMENT_LENS_PYTHON=.venv/bin/python ./run.sh
 
 **Explain with Microsoft AI** sends the selected cluster's aggregate and timeline through a bounded, read-only Responses function-tool loop. With FFmpeg and included clips, it also sends up to four JPEG strips, each containing three sampled frames from a typical or less-typical example. Full videos are not sent. Without images, the assistant receives example metadata and must not claim visual inspection. Use a deployment supporting Responses, tools, strict structured output and image input for the multimodal path.
 
-All four evidence tools must run before the final explanation. Citation choices are limited to retrieved IDs; unsupported IDs and numerical model claims are rejected. Exact measurements remain deterministic. General recovery context cites primary studies and their limitations; it does not prescribe treatment, recovery duration or a player-specific intervention. Primary studies are curated in `cluster_research.py`.
+All four evidence tools must run before the final explanation. Citation choices are limited to retrieved IDs; returned citations are validated and prose is checked for unsupported quantities or individualized recovery advice. Exact measurements remain deterministic. General recovery context cites primary studies and their limitations; it does not prescribe treatment, recovery duration or a player-specific intervention. Primary studies are curated in `cluster_research.py`.
 
-Inference can incur charges. The new multimodal cluster path has mocked adapter coverage; its live Foundry check is pending explicit approval to transmit private match-derived frames and evidence. Earlier metadata-only assistant verification is a separate result. See [VERIFICATION.md](docs/VERIFICATION.md).
+Inference can incur charges. Saved real cluster explanations have been generated with the configured Foundry deployment, four example-image strips and all four evidence tools. The screenshots display one of those immutable results; no new model request was made to capture them. Controlled adapter tests and live results are distinct evidence. See [VERIFICATION.md](docs/VERIFICATION.md).
 
 Microsoft documentation: [SDK and project endpoints](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview), [structured outputs](https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs).
 
@@ -105,6 +146,7 @@ Set `MOVEMENT_LENS_AZURE_SOURCE_ACCOUNT_URL` and `MOVEMENT_LENS_AZURE_SOURCE_CON
 ## Verify and repository boundary
 
 ```bash
+.venv/bin/python -m pip install -e '.[test,azure,foundry]'
 .venv/bin/python -m pytest -q
 cd frontend
 npm run build
@@ -112,6 +154,6 @@ npm run build
 
 See [the implemented cluster specification](docs/CLUSTER_MATCH_PLAN.md) and [verification evidence](docs/VERIFICATION.md). Earlier product plans describe historical interfaces.
 
-Commit source, tests, dependency manifests and docs. Keep `runtime/`, `.venv/`, `.env`, video, model weights and private outputs out of Git. This standalone folder is separate from the submitted Touchline app.
+Commit source, tests, dependency manifests, docs and the selected presentation assets in `docs/media/`. Keep `runtime/`, `.venv/`, `.env`, source video, model weights and private outputs out of Git. This standalone folder is separate from the submitted Touchline app. See [publishing notes](docs/PUBLISHING.md) and [third-party notices](THIRD_PARTY_NOTICES.md). A license for the original application code has not yet been selected.
 
 Architecture: `importer.py` validates snapshots; `features.py` computes descriptors and quality; `exploration.py` supplies the numerical catalogue; `clusters.py` builds single-match aggregates, review gates and exports; `cluster_ai.py` orchestrates evidence tools; `cluster_research.py` holds primary research; `pose_view.py` controls display framing; `cloud.py` owns report storage; `azure_datasets.py` imports snapshots; `app.py` exposes the local API; `frontend/` provides the three screens. Older novelty/review APIs remain for reproducibility.

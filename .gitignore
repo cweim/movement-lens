@@ -18,12 +18,37 @@ frontend/node_modules/
 frontend/dist/
 frontend/*.tsbuildinfo
 
-# Brag video output (regenerable)
-brag-output/brag.mp4
-brag-output/brag.jpg
-brag-output/review-frames/
-brag-output/composition/.hyperframes/
-brag-output/composition/node_modules/
+# Editable video production is local; publish selected assets under docs/media/.
+/brag-output/
+/brag-output-*/
 
 # OS
 .DS_Store
+
+# Source media, private datasets, archives, checkpoints and credentials
+*.mp4
+*.mkv
+*.mov
+*.avi
+*.webm
+*.npz
+*.npy
+*.parquet
+*.sqlite*
+*.db
+*.zip
+*.tar
+*.tar.gz
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.pem
+*.key
+.azure/
+.aws/
+node_modules/
+*.log
+
+# Reserve one explicitly selected public demo asset.
+!docs/media/movement-lens-demo.mp4

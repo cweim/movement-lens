@@ -155,3 +155,56 @@ Validation:
 The Foundry cluster adapter is implemented with required aggregate/examples/timeline/research retrieval, strict retrieved-ID citations, bounded image inputs and an explicit evidence gap for descriptive/mixed categories. The new path can send four three-frame JPEG strips, cluster aggregates and the curated primary research to the existing Foundry deployment. **The live call was not performed:** automatic approval review rejected transmission of private match-derived frames/evidence without explicit payload approval. Prior metadata-only/clip-level Foundry checks remain separate historical results. Do not claim live multimodal cluster verification. No new cloud report upload/download was performed.
 
 Private evidence: `runtime/cluster-proof/browser-check.json`, `verification.json`, `computed-cluster.json`, screenshots, extracted standalone report and `cluster-evidence-pack.zip`; `runtime/prepared/cluster-match-audit.json` contains detailed row accounting. A live verification script is prepared privately but must not be run until the frame/evidence transmission is approved. All these runtime artifacts remain ignored by Git.
+
+
+## Repository presentation review — October 28, 2026
+
+Reviewed both public GitHub repositories and added the shared Touchline → dataset
+ZIP → Movement Lens overview and exact handoff guide. The repositories remain
+independent. Documentation explicitly distinguishes the different matches in the
+older Touchline demo and the Movement Lens prepared example.
+
+The existing runtime now contains real saved cluster-level Foundry results using
+`movement-lens-mini`, four three-frame image strips and all four evidence tools.
+The screenshot review checked one immutable result against its current evidence
+signature, displayed that saved result in the actual UI, and exported it unchanged
+with all 116 cluster members and four representative clips. No new cloud request
+was made during this repository review. This supersedes the earlier approval-pending
+status; it does not turn the mocked SDK test into a live evaluation or establish
+clinical validity.
+
+Both current suites pass: Movement Lens **80**, Touchline **57**. Both production
+frontend builds pass. New CI workflows reproduce tests and builds on GitHub-hosted
+runners without private datasets or cloud credentials; the hosted run remains
+pending publication of the workflow files. Private screenshot/export proof is in
+`runtime/repo-polish/capture-proof.json`.
+
+The cleanup removes the editable video production folder from the next tracked
+snapshot, preserves the local files, and adds selected screenshots and media
+provenance under `docs/media/`. It does not rewrite previous public Git history.
+App source, existing final videos, datasets and model outputs are preserved.
+
+## V2 presentation assets — October 28, 2026
+
+Created a separate 104-second, 1920×1080, 30 fps walkthrough and six 1920×1080
+showcase PNGs. Fresh browser interaction covers cluster inspection, source/pose
+playback, a timeline selection, the existing saved Foundry result, export and a
+playing representative clip in the extracted standalone report. No application
+code, tracking, pose inference or new cloud request was needed.
+
+HyperFrames browser checks report no runtime, layout, contrast or audio errors.
+Final lint reports zero errors and one composition-density warning. Secondary
+metadata remains smaller than the recommended primary-text size; key captions
+were enlarged. Source media durations are bounded and explicit final-frame holds
+cover longer reading slots. The encoded render passes a complete FFmpeg decode;
+sampled encoded frames and all six stills were visually reviewed. Still-image
+layout checks found no clipped or overflowing text.
+
+The demonstration retains the measured scope: 290 usable independent windows,
+580 observed seconds, a selected cluster of 116 members, complete membership and
+four representative clips in the export. The AI section displays a real saved
+result bound to the current evidence and category. Touchline's schematic bridge
+does not claim that the different demo matches are a recorded same-file transfer.
+The original video and composition hashes remain unchanged. Private production
+proof stays under ignored `brag-output/v2/`; selected public assets are in
+`docs/media/`. Repository changes have not been committed or pushed.
