@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Movement Lens Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+      :root {
+        --bg: #f5f6f1;
+        --dark: #1c3429;
+        --accent: #205d45;
+        --ink: #203b30;
+        --ink-light: #587868;
+        --card-bg: #ffffff;
+        --card-shadow: 0 2px 16px rgba(0,0,0,0.10);
+        --pill-bg: #e8f0ec;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); overflow: hidden; font-family: 'Inter', system-ui, sans-serif; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+
+      /* Title card */
+      .title-card {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: var(--dark);
+      }
+      .title-card h1 {
+        color: #fff; font-size: 72px; font-weight: 800;
+        letter-spacing: -0.04em; line-height: 1.1;
+      }
+      .title-card .subtitle {
+        color: rgba(255,255,255,0.6); font-size: 28px; font-weight: 500;
+        margin-top: 16px;
+      }
+      .title-card .stat-row {
+        display: flex; gap: 40px; margin-top: 48px;
+      }
+      .title-card .stat-val {
+        color: #4a9e78; font-size: 42px; font-weight: 700;
+        text-align: center;
+      }
+      .title-card .stat-label {
+        color: rgba(255,255,255,0.5); font-size: 18px; font-weight: 500;
+        margin-top: 4px; text-align: center;
+      }
+
+      /* Section intros */
+      .section-intro {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: var(--bg);
+      }
+      .section-intro .step-num {
+        color: var(--accent); font-size: 18px; font-weight: 700;
+        letter-spacing: 0.1em; text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .section-intro h2 {
+        color: var(--ink); font-size: 48px; font-weight: 700;
+        letter-spacing: -0.03em; text-align: center;
+        max-width: 900px; line-height: 1.2;
+      }
+      .section-intro .desc {
+        color: var(--ink-light); font-size: 22px; font-weight: 400;
+        margin-top: 16px; text-align: center;
+        max-width: 700px; line-height: 1.5;
+      }
+
+      /* Screen recording */
+      .screen-container {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--bg);
+      }
+      .screen-container video {
+        width: 100%; height: 100%; object-fit: contain;
+      }
+
+      /* Overlay label */
+      .overlay-label {
+        position: absolute; bottom: 40px; left: 50%;
+        transform: translateX(-50%);
+        background: var(--dark); color: #fff;
+        font-size: 18px; font-weight: 600;
+        padding: 12px 28px; border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        white-space: nowrap;
+      }
+
+      /* AI loading */
+      .ai-loading-card {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: var(--bg);
+      }
+      .ai-loading-card .spinner {
+        width: 48px; height: 48px; border: 4px solid var(--pill-bg);
+        border-top-color: var(--accent); border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .ai-loading-card .loading-text {
+        color: var(--accent); font-size: 22px; font-weight: 600;
+        margin-top: 24px;
+      }
+      .ai-loading-card .loading-sub {
+        color: var(--ink-light); font-size: 17px; font-weight: 400;
+        margin-top: 8px;
+      }
+
+      /* Outro */
+      .outro {
+        position: absolute; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        background: var(--dark);
+      }
+      .outro .logo-icon {
+        width: 52px; height: 52px; background: var(--accent);
+        border-radius: 12px; display: flex; align-items: center;
+        justify-content: center; color: #fff; font-size: 28px; font-weight: 800;
+        margin-bottom: 20px;
+      }
+      .outro h2 {
+        color: #fff; font-size: 60px; font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+      .outro .tagline {
+        color: rgba(255,255,255,0.6); font-size: 20px; font-weight: 500;
+        margin-top: 16px;
+      }
+      .outro .hackathon {
+        color: rgba(255,255,255,0.55); font-size: 16px; font-weight: 500;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="110" data-width="1920" data-height="1080">
+
+      <!-- Scene 1: Title Card (0-7s) -->
+      <section id="scene-title" class="clip" data-start="0" data-duration="7" data-track-index="0">
+        <div class="title-card">
+          <h1 id="title-h1">Movement Lens</h1>
+          <div class="subtitle" id="title-sub">Data-driven movement analysis from broadcast footage</div>
+          <div class="stat-row" id="title-stats">
+            <div class="stat-box">
+              <div class="stat-val">290</div>
+              <div class="stat-label" data-layout-ignore>observed windows</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val">K=2</div>
+              <div class="stat-label" data-layout-ignore>clusters found</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val">9m 40s</div>
+              <div class="stat-label" data-layout-ignore>total observed</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scene 2: Step 1 intro (7-11s) -->
+      <section id="scene-step1" class="clip" data-start="7" data-duration="4" data-track-index="0">
+        <div class="section-intro">
+          <div class="step-num" id="step1-num">Step 1</div>
+          <h2 id="step1-h2">See how a player moves</h2>
+          <div class="desc" id="step1-desc">Pose estimation + clustering from broadcast video alone.</div>
+        </div>
+      </section>
+
+      <!-- Videos on track 1 (below overlays on track 2) -->
+      <video id="vid-clusters" class="clip" data-start="11" data-duration="8" data-track-index="1" src="assets/video/seg1-clusters.mp4" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--bg);"></video>
+      <video id="vid-inspect" class="clip" data-start="19" data-duration="13" data-track-index="1" src="assets/video/seg2-inspect.mp4" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--bg);"></video>
+
+      <!-- Overlay labels on track 2 -->
+      <section id="scene-clusters-label" class="clip" data-start="11" data-duration="8" data-track-index="2">
+        <div class="overlay-label" id="label-clusters">290 movement windows &rarr; distinct patterns automatically grouped</div>
+      </section>
+      <section id="scene-inspect-label" class="clip" data-start="19" data-duration="13" data-track-index="2">
+        <div class="overlay-label" id="label-inspect">Pose skeleton overlaid on broadcast footage &mdash; no sensors required</div>
+      </section>
+
+      <!-- Scene 5: Step 2 intro (32-36s) -->
+      <section id="scene-step2" class="clip" data-start="32" data-duration="4" data-track-index="0">
+        <div class="section-intro">
+          <div class="step-num" id="step2-num">Step 2</div>
+          <h2 id="step2-h2">Track patterns across the match</h2>
+          <div class="desc" id="step2-desc">Spot fatigue, rhythm shifts, and tactical changes over time.</div>
+        </div>
+      </section>
+
+      <video id="vid-timeline" class="clip" data-start="36" data-duration="12" data-track-index="1" src="assets/video/seg3-timeline.mp4" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--bg);"></video>
+      <section id="scene-timeline-label" class="clip" data-start="36" data-duration="12" data-track-index="2">
+        <div class="overlay-label" id="label-timeline">Every movement window mapped across the full match</div>
+      </section>
+
+      <!-- Scene 7: Step 3 intro (48-52s) -->
+      <section id="scene-step3" class="clip" data-start="48" data-duration="4" data-track-index="0">
+        <div class="section-intro">
+          <div class="step-num" id="step3-num">Step 3</div>
+          <h2 id="step3-h2">Understand why &mdash; powered by Microsoft AI</h2>
+          <div class="desc" id="step3-desc">Cited sports-science research coaches can act on.</div>
+        </div>
+      </section>
+
+      <video id="vid-explain" class="clip" data-start="52" data-duration="10" data-track-index="1" src="assets/video/seg4-explain-click.mp4" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--bg);"></video>
+      <section id="scene-explain-label" class="clip" data-start="52" data-duration="10" data-track-index="2">
+        <div class="overlay-label" id="label-explain">One click &rarr; evidence-backed analysis from Microsoft Foundry</div>
+      </section>
+
+      <!-- Scene 9: Loading transition (62-66s) -->
+      <section id="scene-loading" class="clip" data-start="62" data-duration="4" data-track-index="0">
+        <div class="ai-loading-card">
+          <div class="spinner" id="ai-spinner"></div>
+          <div class="loading-text" id="loading-text">Reading cluster, examples, timeline and research</div>
+          <div class="loading-sub" id="loading-sub">Microsoft Foundry is interpreting the evidence...</div>
+        </div>
+      </section>
+
+      <video id="vid-ai" class="clip" data-start="66" data-duration="22" data-track-index="1" src="assets/video/seg5-ai-output.mp4" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--bg);"></video>
+      <section id="scene-ai-label" class="clip" data-start="66" data-duration="22" data-track-index="2">
+        <div class="overlay-label" id="label-ai">Sports-science research cited alongside raw movement data</div>
+      </section>
+
+      <video id="vid-export" class="clip" data-start="88" data-duration="12" data-track-index="1" src="assets/video/seg6-export.mp4" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:var(--bg);"></video>
+      <section id="scene-export-label" class="clip" data-start="88" data-duration="12" data-track-index="2">
+        <div class="overlay-label" id="label-export">Export everything &mdash; clips, data, AI report &mdash; ready for the coaching staff</div>
+      </section>
+
+      <!-- Scene 12: Outro (100-110s) -->
+      <section id="scene-outro" class="clip" data-start="100" data-duration="10" data-track-index="0">
+        <div class="outro">
+          <div class="logo-icon" id="outro-logo">M</div>
+          <h2 id="outro-h2">Movement Lens</h2>
+          <div class="tagline" id="outro-tagline">From broadcast footage to coaching insight. No sensors required.</div>
+          <div class="hackathon" id="outro-hackathon" data-layout-ignore>Built for the Microsoft Premier League Hackathon</div>
+        </div>
+      </section>
+
+      <!-- Audio -->
+      <audio id="bg-music" data-start="0" data-duration="110" data-track-index="10" data-volume="0.28" src="assets/music/happy-beats-business-moves-vol-11-by-ende-dot-app.mp3"></audio>
+      <audio id="sfx-title" data-start="0.8" data-duration="0.18" data-track-index="11" data-volume="0.55" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+      <audio id="sfx-step1" data-start="7.3" data-duration="0.11" data-track-index="12" data-volume="0.45" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-step2" data-start="32.3" data-duration="0.11" data-track-index="12" data-volume="0.45" src="assets/sfx/interface/drop_002.ogg"></audio>
+      <audio id="sfx-step3" data-start="48.3" data-duration="0.11" data-track-index="12" data-volume="0.45" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-click" data-start="54" data-duration="0.11" data-track-index="13" data-volume="0.50" src="assets/sfx/interface/click_003.ogg"></audio>
+
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      /* Scene 1: Title (0-7s) — h1 visible at t=0 for thumbnail */
+      tl.fromTo("#title-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.5);
+      tl.fromTo(".stat-box:nth-child(1)", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 1.4);
+      tl.fromTo(".stat-box:nth-child(2)", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 1.8);
+      tl.fromTo(".stat-box:nth-child(3)", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 2.2);
+      /* Gentle pulse on stats to fill dead stretch */
+      tl.fromTo("#title-stats", { scale: 1 }, { scale: 1.03, duration: 1.2, ease: "power1.inOut", yoyo: true, repeat: 1 }, 3.2);
+      tl.to("#scene-title .title-card", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 6.4);
+
+      /* Scene 2: Step 1 (7-11s) */
+      tl.fromTo("#step1-num", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 7.3);
+      tl.fromTo("#step1-h2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 7.6);
+      tl.fromTo("#step1-desc", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 8.2);
+      tl.to("#scene-step1 .section-intro", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 10.5);
+
+      /* Scene 3: Clusters (11-19s) */
+      tl.fromTo("#label-clusters", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 12);
+      tl.to("#label-clusters", { opacity: 0, duration: 0.3 }, 17);
+
+      /* Scene 4: Inspection (19-32s) */
+      tl.fromTo("#label-inspect", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 20);
+      tl.to("#label-inspect", { opacity: 0, duration: 0.3 }, 29);
+
+      /* Scene 5: Step 2 (32-36s) */
+      tl.fromTo("#step2-num", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 32.3);
+      tl.fromTo("#step2-h2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 32.6);
+      tl.fromTo("#step2-desc", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 33.2);
+      tl.to("#scene-step2 .section-intro", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 35.5);
+
+      /* Scene 6: Timeline (36-48s) */
+      tl.fromTo("#label-timeline", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 37);
+      tl.to("#label-timeline", { opacity: 0, duration: 0.3 }, 45);
+
+      /* Scene 7: Step 3 (48-52s) */
+      tl.fromTo("#step3-num", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 48.3);
+      tl.fromTo("#step3-h2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 48.6);
+      tl.fromTo("#step3-desc", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 49.2);
+      tl.to("#scene-step3 .section-intro", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 51.5);
+
+      /* Scene 8: Explain click (52-62s) */
+      tl.fromTo("#label-explain", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 53);
+      tl.to("#label-explain", { opacity: 0, duration: 0.3 }, 59);
+
+      /* Scene 9: Loading (62-66s) */
+      tl.fromTo("#loading-text", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 62.5);
+      tl.fromTo("#loading-sub", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 63);
+      tl.to("#scene-loading .ai-loading-card", { opacity: 0, duration: 0.3, ease: "power2.inOut" }, 65.5);
+
+      /* Scene 10: AI output (66-88s) */
+      tl.fromTo("#label-ai", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 67.5);
+      tl.to("#label-ai", { opacity: 0, duration: 0.3 }, 83);
+
+      /* Scene 11: Export (88-100s) */
+      tl.fromTo("#label-export", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 89.5);
+      tl.to("#label-export", { opacity: 0, duration: 0.3 }, 96);
+
+      /* Scene 12: Outro (100-110s) */
+      tl.fromTo("#outro-logo", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.4)" }, 100.5);
+      tl.fromTo("#outro-h2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 101);
+      tl.fromTo("#outro-tagline", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 101.8);
+      tl.fromTo("#outro-hackathon", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 102.5);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

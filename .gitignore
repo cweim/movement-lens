@@ -1,0 +1,29 @@
+# Runtime data (datasets, jobs, browser caches)
+runtime/
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+*.pyc
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Frontend build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+
+# Brag video output (regenerable)
+brag-output/brag.mp4
+brag-output/brag.jpg
+brag-output/review-frames/
+brag-output/composition/.hyperframes/
+brag-output/composition/node_modules/
+
+# OS
+.DS_Store
