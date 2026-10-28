@@ -3,7 +3,8 @@
 One player. One match. Its movement patterns.
 
 [Quick start](#run-locally) · [Touchline handoff](docs/HANDOFF.md) ·
-[Methods](docs/CLUSTER_MATCH_PLAN.md) · [Microsoft integration](#optional-microsoft-integrations)
+[Methods](docs/CLUSTER_MATCH_PLAN.md) · [Future work](#future-work) ·
+[Microsoft integration](#optional-microsoft-integrations)
 
 Movement Lens turns [Touchline](https://github.com/cweim/touchline) player-window datasets into inspectable movement groups, a match-wide recurrence timeline and a shareable cluster evidence pack.
 
@@ -98,6 +99,52 @@ Projected knee/hip angles, trunk inclination and torso-scaled ankle separation r
 Independent observations determine fitting and exposure summaries; overlapping source intervals count once toward observed duration. A window or merged interval is not a step, repetition or sprint count. Cluster frequency does not measure muscle force, activation, fatigue, injury risk, total workload or a recovery requirement. Human-reviewed categories remain interpretations.
 
 Source video and player-scaled pose share the tracked-player crop convention. Missing joints and source-boundary clipping remain visible; original hip-centred coordinates stay in the API. Playback aligns relative time, not gait phase or camera angle.
+
+## Future work
+
+**The original research question was movement anomaly detection:** could a
+player's pose windows reveal unusual movement relative to their usual patterns,
+and eventually support investigation of changes around injury events?
+
+Early experiments surfaced unusual windows but did not establish a consistent
+pre-injury signal across matches. Sparse and uneven player coverage, noisy
+broadcast poses and a limited reference library made it difficult to separate
+movement changes from different activities, camera views and estimation errors.
+It remains an open question whether additional data would resolve those limits.
+The current app therefore focuses on an inspectable foundation: group observed
+movement, review examples, locate recurrence and preserve the evidence.
+
+Potential next steps, beyond the current single-match workflow:
+
+- **Personal movement baselines across matches.** Collect more independent
+  observations across players, matches and movement categories. Compare similar
+  activities and viewpoints before treating distance from a baseline as unusual.
+  Evaluate on held-out matches and players, keeping overlapping windows together
+  to prevent leakage.
+- **Quality-aware anomaly review.** Separate likely pose/tracking failures from
+  candidate movement differences, quantify coverage and uncertainty, and ask
+  analysts to review flagged clips. Measure retrieval usefulness and false-alert
+  burden before considering injury-related outcomes.
+- **Movement search and sequence discovery.** Use an example clip to retrieve
+  comparable moments, and compare temporal pose representations with the current
+  transparent descriptors. Explore transitions and longer movement sequences
+  alongside the existing posture groups; validate any activity labels with human
+  annotations.
+- **Longitudinal movement profiles.** Compare a player's reviewed patterns across
+  matches or match periods, accounting for observed coverage, activity mix and
+  camera view. Link source-timed windows to permitted event or tracking data to
+  investigate the football context in which a pattern appears.
+- **Validate against better measurements.** Where paired data and consent are
+  available, compare broadcast-derived measurements with multi-view video,
+  motion capture or wearables. Study whether viewpoint correction or 3D pose
+  improves measurement reliability before making biomechanical interpretations.
+
+**A longer-term goal is to support coaching and physio review with validated
+longitudinal evidence.** Injury prediction or individualized recovery support
+would additionally require appropriate outcome data, prospective evaluation and
+clinical collaboration. Larger pose datasets alone would not validate those
+claims. The next practical milestone is a broader, independently reviewed
+Touchline window library and a benchmark for finding comparable movements.
 
 ## Evidence pack
 
